@@ -10,9 +10,9 @@ from sqlalchemy import Integer, String, Text
 from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
-import yagmail
 import os
 from dotenv import load_dotenv
+import yagmail
 
 load_dotenv()
 '''
