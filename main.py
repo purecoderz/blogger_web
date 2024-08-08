@@ -286,14 +286,19 @@ def contact():
         name = request.form.get("name")
         email = request.form.get("email")
         subjects = f"Subject:New Message\n\nName: {name}\nEmail: {email}"
+        msg = False
         full_message = f"{subjects}\n\n{message}"
-        with yagmail.SMTP(EMAIL_USER, EMAIL_PASS) as yag:
-            yag.send(
-                to=OFFICIAL_EMAIL,
-                subject="Message from Flask Blog",
-                contents=full_message
-            )
-            return redirect(url_for("contact", msg_sent=True, current_user=current_user))
+        try:
+            with yagmail.SMTP(EMAIL_USER, EMAIL_PASS) as yag:
+                yag.send(
+                    to=OFFICIAL_EMAIL,
+                    subject="Message from Flask Blog",
+                    contents=full_message)
+                msg = True
+        except Exception as e:
+            msg = False
+        finally:
+            return render_template("contact.html", msg_sent=msg, current_user=current_user)
     return render_template("contact.html", current_user=current_user)
 
 
